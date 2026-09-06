@@ -22,24 +22,26 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('parola12345'),
         ]);
 
-        $acme = Tenant::factory()->create([
-            'name' => 'Acme A.Ş.',
-            'slug' => 'acme',
+        // Farklı sektörlerden üç örnek işletme: aynı sistem, farklı ihtiyaçlar.
+        $hirdavat = Tenant::factory()->create([
+            'name' => 'Yıldız Hırdavat',
+            'slug' => 'yildiz',
             'status' => TenantStatus::Active,
+            'paid_until' => now()->addMonths(2),
         ]);
 
-        $beta = Tenant::factory()->trialing()->create([
-            'name' => 'Beta Yazılım',
-            'slug' => 'beta',
+        $kuafor = Tenant::factory()->trialing()->create([
+            'name' => 'Ece Kuaför',
+            'slug' => 'ece',
         ]);
 
-        $gecikmis = Tenant::factory()->pastDue()->create([
-            'name' => 'Gecikmiş Ticaret',
-            'slug' => 'gecikmis',
+        $danismanlik = Tenant::factory()->pastDue()->create([
+            'name' => 'Demir Danışmanlık',
+            'slug' => 'demir',
             'paid_until' => now()->subWeek(),
         ]);
 
-        foreach ([$acme, $beta, $gecikmis] as $tenant) {
+        foreach ([$hirdavat, $kuafor, $danismanlik] as $tenant) {
             foreach (Module::defaults() as $module) {
                 $tenant->enableModule($module);
             }

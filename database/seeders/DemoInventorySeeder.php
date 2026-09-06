@@ -19,7 +19,7 @@ class DemoInventorySeeder extends Seeder
 {
     public function run(): void
     {
-        $tenant = Tenant::query()->where('slug', 'acme')->first();
+        $tenant = Tenant::query()->where('slug', 'yildiz')->first();
 
         if ($tenant === null) {
             return;
