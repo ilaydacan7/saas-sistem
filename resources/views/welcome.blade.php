@@ -6,16 +6,19 @@
 <x-card>
     <h1 class="text-xl font-semibold tracking-tight">{{ config('app.name') }}</h1>
     <p class="mt-1.5 mb-6 text-sm text-slate-500 dark:text-slate-400">
-        Her şirket kendi adresinde, kendi verisiyle çalışır.
+        Müşteri, stok, satış ve tahsilat takibi tek yerde. Her şirket kendi adresinde, kendi verisiyle çalışır.
     </p>
 
     <a href="{{ route('kayit') }}" class="block">
         <x-button type="button">Şirketinizi kaydedin</x-button>
     </a>
 
-    <p class="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
-        Zaten hesabınız var mı? Şirketinizin adresinden giriş yapın:<br>
-        <span class="font-medium text-slate-700 dark:text-slate-300">sirketiniz.{{ config('tenancy.base_domain') }}</span>
+    <a href="{{ route('giris') }}" class="mt-3 block">
+        <x-button type="button" variant="ghost" class="w-full !px-4 !py-2.5 !text-sm">Giriş yap</x-button>
+    </a>
+
+    <p class="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        14 gün ücretsiz deneme · Kredi kartı istemiyoruz
     </p>
 </x-card>
 @endsection

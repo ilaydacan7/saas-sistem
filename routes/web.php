@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Central\SuperAdminLoginController;
 use App\Http\Controllers\Central\TenantAdminController;
 use App\Http\Controllers\Central\TenantRegistrationController;
+use App\Http\Controllers\Central\WorkspaceController;
+use App\Http\Controllers\LoginEntryController;
 use App\Http\Controllers\Tenant\CustomerController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\ForgotPasswordController;
@@ -27,6 +29,11 @@ Route::get('/', function (TenantContext $context) {
 })->name('home');
 
 Route::middleware('central')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/adresimi-bul', [WorkspaceController::class, 'findCreate'])->name('adresimi.bul');
+        Route::post('/adresimi-bul', [WorkspaceController::class, 'findStore']);
+    });
+
     Route::get('/kayit', [TenantRegistrationController::class, 'create'])->name('kayit');
     Route::post('/kayit', [TenantRegistrationController::class, 'store']);
 
@@ -51,11 +58,13 @@ Route::middleware('central')->group(function () {
     });
 });
 
+Route::middleware('guest')->group(function () {
+    Route::get('/giris', [LoginEntryController::class, 'create'])->name('giris');
+    Route::post('/giris', [LoginEntryController::class, 'store']);
+});
+
 Route::middleware('tenant.only')->group(function () {
     Route::middleware('guest')->group(function () {
-        Route::get('/giris', [LoginController::class, 'create'])->name('giris');
-        Route::post('/giris', [LoginController::class, 'store']);
-
         Route::get('/parola/unuttum', [ForgotPasswordController::class, 'create'])->name('parola.unuttum');
         Route::post('/parola/unuttum', [ForgotPasswordController::class, 'store']);
 

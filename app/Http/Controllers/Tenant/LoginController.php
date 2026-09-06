@@ -22,6 +22,7 @@ class LoginController extends Controller
         return view('auth.login', [
             'tenant' => $this->context->getOrFail(),
             'justRegistered' => $request->query('kayit') === 'tamam',
+            'merkezGirisUrl' => $this->merkezGirisUrl($request),
         ]);
     }
 
@@ -47,6 +48,17 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('panel'));
+    }
+
+    /**
+     * Yanlış şirkete gelen kullanıcı merkezdeki giriş kapısına dönebilsin.
+     */
+    private function merkezGirisUrl(Request $request): string
+    {
+        $port = $request->getPort();
+        $ek = in_array($port, [80, 443], true) ? '' : ':'.$port;
+
+        return $request->getScheme().'://'.config('tenancy.base_domain').$ek.'/giris';
     }
 
     public function destroy(Request $request): RedirectResponse

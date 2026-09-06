@@ -45,9 +45,12 @@ class TenantLoginTest extends TestCase
             ->assertSee($this->acme->name);
     }
 
-    public function test_giris_sayfasi_merkezi_hostta_acilmaz(): void
+    public function test_merkezi_hostta_kiraci_giris_formu_yerine_adres_kapisi_acilir(): void
     {
-        $this->get('http://saas.local/giris')->assertNotFound();
+        $this->get('http://saas.local/giris')
+            ->assertOk()
+            ->assertSee('Şirket adresiniz')
+            ->assertDontSee('Parolamı unuttum');
     }
 
     public function test_dogru_bilgilerle_giris_yapilir(): void
