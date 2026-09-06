@@ -1,0 +1,56 @@
+## Yerel gelistirme altyapisi.
+## PHP host makinede (XAMPP) calisir; burada yalnizca stateful servisler ayaga kalkar.
+## Kullanim:  docker compose up -d
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: saas_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-saas}
+      POSTGRES_USER: ${DB_USERNAME:-saas}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      # Turkce sıralama/karsilastirma sorunlarini onlemek icin deterministik collation.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-saas} -d ${DB_DATABASE:-saas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: saas_redis
+    restart: unless-stopped
+    # Cache + queue + session tek instance'ta; AOF ile kuyruk isleri kalici olsun.
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-secret}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-secret}", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: saas_mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP  -> Laravel buraya mail gonderir
+      - "8025:8025"   # Web   -> http://localhost:8025
+    environment:
+      MP_MAX_MESSAGES: 500
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  postgres_data:
+  redis_data:
