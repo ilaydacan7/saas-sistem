@@ -1,15 +1,20 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ödeme gerekli</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('baslik', 'Ödeme gerekli')
+
+@section('icerik')
+<div class="kart">
     <h1>Ödemeniz görünmüyor</h1>
-    <p>
-        Hesabınız ödeme gecikmesi nedeniyle sınırlandırıldı. Ödemeniz alındığında
-        tüm ekranlara erişiminiz otomatik olarak geri açılır.
+    <p class="alt">
+        Hesabınız ödeme gecikmesi nedeniyle sınırlandırıldı. Verileriniz duruyor;
+        ödemeniz alındığında tüm ekranlara erişiminiz otomatik olarak geri açılır.
     </p>
-</body>
-</html>
+
+    @auth
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="cikis">Çıkış yap</button>
+        </form>
+    @endauth
+</div>
+@endsection

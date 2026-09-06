@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\EnsureCentralDomain;
+use App\Http\Middleware\EnsureTenantDomain;
 use App\Http\Middleware\EnsureTenantIsActive;
 use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
@@ -18,9 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
             EnsureTenantIsActive::class,
         ]);
 
+        $middleware->redirectGuestsTo('/giris');
+        $middleware->redirectUsersTo('/panel');
+
         $middleware->alias([
             'tenant' => ResolveTenant::class,
             'tenant.active' => EnsureTenantIsActive::class,
+            'tenant.only' => EnsureTenantDomain::class,
+            'central' => EnsureCentralDomain::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();
