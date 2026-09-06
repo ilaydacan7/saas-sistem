@@ -4,6 +4,10 @@
 
 @section('icerik')
 <x-card>
+    @if (session('durum'))
+        <x-notice tone="basari">{{ session('durum') }}</x-notice>
+    @endif
+
     @if ($justRegistered)
         <x-notice tone="basari">
             Hesabınız hazır. Kayıt sırasında belirlediğiniz bilgilerle giriş yapın.
@@ -30,5 +34,11 @@
 
         <x-button type="submit">Giriş yap</x-button>
     </form>
+
+    <p class="mt-5 text-center text-sm">
+        <a href="{{ route('parola.unuttum') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">
+            Parolamı unuttum
+        </a>
+    </p>
 </x-card>
 @endsection

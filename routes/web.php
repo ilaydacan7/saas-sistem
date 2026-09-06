@@ -6,7 +6,9 @@ use App\Http\Controllers\Central\SuperAdminLoginController;
 use App\Http\Controllers\Central\TenantAdminController;
 use App\Http\Controllers\Central\TenantRegistrationController;
 use App\Http\Controllers\Tenant\DashboardController;
+use App\Http\Controllers\Tenant\ForgotPasswordController;
 use App\Http\Controllers\Tenant\LoginController;
+use App\Http\Controllers\Tenant\ResetPasswordController;
 use App\Tenancy\TenantContext;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +49,12 @@ Route::middleware('tenant.only')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/giris', [LoginController::class, 'create'])->name('giris');
         Route::post('/giris', [LoginController::class, 'store']);
+
+        Route::get('/parola/unuttum', [ForgotPasswordController::class, 'create'])->name('parola.unuttum');
+        Route::post('/parola/unuttum', [ForgotPasswordController::class, 'store']);
+
+        Route::get('/parola/sifirla/{token}', [ResetPasswordController::class, 'create'])->name('parola.sifirla');
+        Route::post('/parola/sifirla', [ResetPasswordController::class, 'store']);
     });
 
     Route::middleware('auth')->group(function () {
