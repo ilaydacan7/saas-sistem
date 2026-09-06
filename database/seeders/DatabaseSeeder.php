@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Tenant;
 use App\Models\User;
+use App\Modules\Module;
 use App\Tenancy\TenantRole;
 use App\Tenancy\TenantStatus;
 use Illuminate\Database\Seeder;
@@ -39,6 +40,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ([$acme, $beta, $gecikmis] as $tenant) {
+            foreach (Module::defaults() as $module) {
+                $tenant->enableModule($module);
+            }
+
             User::factory()->forTenant($tenant)->owner()->create([
                 'name' => 'Şirket Sahibi',
                 'email' => 'yonetici@ornek.com',

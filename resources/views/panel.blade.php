@@ -1,44 +1,38 @@
-@extends('layouts.app')
+@extends('layouts.uygulama')
 
 @section('baslik', $tenant->name.' — Panel')
-@section('genislik', 'max-w-2xl')
 
 @section('icerik')
-@if (session('durum'))
-    <x-notice tone="basari">{{ session('durum') }}</x-notice>
+<div class="mb-5">
+    <h1 class="text-xl font-semibold tracking-tight">Panel</h1>
+    <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+        {{ auth()->user()->name }} olarak giriş yapıldı
+    </p>
+</div>
+
+@if ($tenant->status === \App\Tenancy\TenantStatus::Trialing && $kalanGun !== null)
+    <x-notice tone="uyari">
+        Deneme sürenizin bitmesine <strong class="font-semibold">{{ $kalanGun }} gün</strong> kaldı
+        ({{ $tenant->trial_ends_at->format('d.m.Y') }}).
+    </x-notice>
+@endif
+
+@if ($moduller !== [])
+    <div class="mb-4 grid gap-3 sm:grid-cols-2">
+        @foreach ($moduller as $modul)
+            <a href="{{ route($modul->routeName()) }}"
+               class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-700">
+                <div class="font-medium">{{ $modul->label() }}</div>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ $modul->description() }}</p>
+            </a>
+        @endforeach
+    </div>
 @endif
 
 <x-card>
-    <div class="mb-6 flex items-start justify-between gap-4">
-        <div>
-            <h1 class="text-xl font-semibold tracking-tight">{{ $tenant->name }}</h1>
-            <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
-                {{ auth()->user()->name }} olarak giriş yapıldı
-            </p>
-        </div>
+    <h2 class="mb-4 text-base font-semibold">Hesap</h2>
 
-        <div class="flex items-center gap-2">
-            @if (auth()->user()->canManageTeam())
-                <a href="{{ route('ekip.index') }}">
-                    <x-button type="button" variant="ghost">Ekip</x-button>
-                </a>
-            @endif
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <x-button type="submit" variant="ghost">Çıkış</x-button>
-            </form>
-        </div>
-    </div>
-
-    @if ($tenant->status === \App\Tenancy\TenantStatus::Trialing && $kalanGun !== null)
-        <x-notice tone="uyari">
-            Deneme sürenizin bitmesine <strong class="font-semibold">{{ $kalanGun }} gün</strong> kaldı
-            ({{ $tenant->trial_ends_at->format('d.m.Y') }}).
-        </x-notice>
-    @endif
-
-    <dl class="divide-y divide-slate-200 text-sm dark:divide-slate-800">
+    <dl class="divide-y divide-slate-100 text-sm dark:divide-slate-800">
         @foreach ([
             'Adres' => $tenant->host(),
             'Durum' => $tenant->status->label(),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Modules\Module;
 use App\Tenancy\TenantStatus;
 use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,6 +64,55 @@ class Tenant extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function modules(): HasMany
+    {
+        return $this->hasMany(TenantModule::class);
+    }
+
+    public function hasModule(Module $module): bool
+    {
+        return $this->modules->contains(fn (TenantModule $kayit) => $kayit->module === $module);
+    }
+
+    /**
+     * @return list<Module>
+     */
+    public function enabledModules(): array
+    {
+        return array_values(array_filter(
+            Module::cases(),
+            fn (Module $module) => $this->hasModule($module)
+        ));
+    }
+
+    public function enableModule(Module $module): void
+    {
+        if (! $module->isAvailable()) {
+            return;
+        }
+
+        TenantModule::firstOrCreate([
+            'tenant_id' => $this->getKey(),
+            'module' => $module->value,
+        ]);
+
+        $this->unsetRelation('modules');
+    }
+
+    public function disableModule(Module $module): void
+    {
+        if ($module->isCore()) {
+            return;
+        }
+
+        TenantModule::query()
+            ->where('tenant_id', $this->getKey())
+            ->where('module', $module->value)
+            ->delete();
+
+        $this->unsetRelation('modules');
     }
 
     public function canAccess(): bool

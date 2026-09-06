@@ -3,6 +3,7 @@
     'label',
     'type' => 'text',
     'hint' => null,
+    'value' => null,
     'suffix' => null,
     'required' => false,
     'autofocus' => false,
@@ -20,7 +21,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             type="{{ $type }}"
-            value="{{ $type === 'password' ? '' : old($name) }}"
+            value="{{ $type === 'password' ? '' : old($name, $value) }}"
             @required($required)
             @if ($autofocus) autofocus @endif
             {{ $attributes->class([

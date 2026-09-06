@@ -5,10 +5,12 @@ declare(strict_types=1);
 use App\Http\Controllers\Central\SuperAdminLoginController;
 use App\Http\Controllers\Central\TenantAdminController;
 use App\Http\Controllers\Central\TenantRegistrationController;
+use App\Http\Controllers\Tenant\CustomerController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\ForgotPasswordController;
 use App\Http\Controllers\Tenant\InvitationAcceptController;
 use App\Http\Controllers\Tenant\LoginController;
+use App\Http\Controllers\Tenant\ModuleSettingsController;
 use App\Http\Controllers\Tenant\ResetPasswordController;
 use App\Http\Controllers\Tenant\TeamController;
 use App\Tenancy\TenantContext;
@@ -65,6 +67,20 @@ Route::middleware('tenant.only')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/panel', DashboardController::class)->name('panel');
         Route::post('/cikis', [LoginController::class, 'destroy'])->name('logout');
+
+        Route::middleware(['modul:musteriler'])->prefix('musteriler')->name('musteriler.')->group(function () {
+            Route::get('/', [CustomerController::class, 'index'])->name('index');
+            Route::get('/yeni', [CustomerController::class, 'create'])->name('create');
+            Route::post('/', [CustomerController::class, 'store'])->name('store');
+            Route::get('/{customer}/duzenle', [CustomerController::class, 'edit'])->name('edit');
+            Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
+            Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware('ekip')->prefix('ayarlar')->name('ayarlar.')->group(function () {
+            Route::get('/moduller', [ModuleSettingsController::class, 'index'])->name('moduller');
+            Route::patch('/moduller', [ModuleSettingsController::class, 'update'])->name('moduller.guncelle');
+        });
 
         Route::middleware('ekip')->prefix('ekip')->name('ekip.')->group(function () {
             Route::get('/', [TeamController::class, 'index'])->name('index');

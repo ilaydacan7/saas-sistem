@@ -6,6 +6,7 @@ namespace App\Tenancy;
 
 use App\Models\Tenant;
 use App\Models\User;
+use App\Modules\Module;
 use Illuminate\Support\Facades\DB;
 
 class TenantRegistrar
@@ -36,6 +37,10 @@ class TenantRegistrar
 
             $owner->email_verified_at = now();
             $owner->save();
+
+            foreach (Module::defaults() as $module) {
+                $tenant->enableModule($module);
+            }
 
             return [$tenant, $owner];
         });

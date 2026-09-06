@@ -1,18 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.uygulama')
 
 @section('baslik', 'Ekip')
-@section('genislik', 'max-w-3xl')
 
 @section('icerik')
-<div class="mb-6">
-    <a href="{{ route('panel') }}" class="text-sm text-indigo-600 hover:underline dark:text-indigo-400">← Panel</a>
-    <h1 class="mt-1 text-xl font-semibold tracking-tight">Ekip</h1>
+<div class="mb-5">
+    <h1 class="text-xl font-semibold tracking-tight">Ekip</h1>
     <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{{ $tenant->name }}</p>
 </div>
-
-@if (session('durum'))
-    <x-notice tone="basari">{{ session('durum') }}</x-notice>
-@endif
 
 @error('uye')<x-notice tone="uyari">{{ $message }}</x-notice>@enderror
 @error('role')<x-notice tone="uyari">{{ $message }}</x-notice>@enderror

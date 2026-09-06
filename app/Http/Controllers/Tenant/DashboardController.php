@@ -16,6 +16,7 @@ class DashboardController extends Controller
 
         return view('panel', [
             'tenant' => $tenant,
+            'moduller' => $tenant->enabledModules(),
             'kalanGun' => $tenant->trial_ends_at?->isFuture()
                 ? (int) now()->startOfDay()->diffInDays($tenant->trial_ends_at->startOfDay())
                 : null,

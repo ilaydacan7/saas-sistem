@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureCanManageTeam;
 use App\Http\Middleware\EnsureCentralDomain;
+use App\Http\Middleware\EnsureModuleEnabled;
 use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\EnsureTenantDomain;
 use App\Http\Middleware\EnsureTenantIsActive;
@@ -33,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'central' => EnsureCentralDomain::class,
             'superadmin' => EnsureSuperAdmin::class,
             'ekip' => EnsureCanManageTeam::class,
+            'modul' => EnsureModuleEnabled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();
