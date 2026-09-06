@@ -8,6 +8,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Tenancy\TenantStatus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->superAdmin()->create([
             'name' => 'Sistem Yöneticisi',
             'email' => 'admin@saas.local',
+            'password' => Hash::make('parola12345'),
         ]);
 
         $acme = Tenant::factory()->create([
@@ -29,10 +31,17 @@ class DatabaseSeeder extends Seeder
             'slug' => 'beta',
         ]);
 
-        foreach ([$acme, $beta] as $tenant) {
+        $gecikmis = Tenant::factory()->pastDue()->create([
+            'name' => 'Gecikmiş Ticaret',
+            'slug' => 'gecikmis',
+            'paid_until' => now()->subWeek(),
+        ]);
+
+        foreach ([$acme, $beta, $gecikmis] as $tenant) {
             User::factory()->forTenant($tenant)->create([
                 'name' => 'Tenant Yöneticisi',
                 'email' => 'yonetici@ornek.com',
+                'password' => Hash::make('parola12345'),
             ]);
         }
     }

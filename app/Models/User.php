@@ -23,6 +23,10 @@ class User extends Authenticatable
     ];
 
     /** @var list<string> */
+    protected $attributes = [
+        'is_super_admin' => false,
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',

@@ -29,6 +29,7 @@ class Tenant extends Model
         'custom_domain',
         'status',
         'trial_ends_at',
+        'paid_until',
         'suspended_at',
         'settings',
     ];
@@ -38,6 +39,7 @@ class Tenant extends Model
         return [
             'status' => TenantStatus::class,
             'trial_ends_at' => 'datetime',
+            'paid_until' => 'datetime',
             'suspended_at' => 'datetime',
             'settings' => 'array',
         ];
@@ -58,6 +60,11 @@ class Tenant extends Model
         return $this->hasMany(User::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function canAccess(): bool
     {
         return $this->status->canAccess();
@@ -68,6 +75,50 @@ class Tenant extends Model
         return $this->status === TenantStatus::Trialing
             && $this->trial_ends_at !== null
             && $this->trial_ends_at->isPast();
+    }
+
+    public function subscriptionExpired(): bool
+    {
+        return $this->paid_until !== null && $this->paid_until->isPast();
+    }
+
+    public function suspend(): void
+    {
+        $this->forceFill([
+            'status' => TenantStatus::Suspended,
+            'suspended_at' => now(),
+        ])->save();
+    }
+
+    public function reactivate(): void
+    {
+        $this->forceFill([
+            'status' => $this->statusAfterReactivation(),
+            'suspended_at' => null,
+        ])->save();
+    }
+
+    public function extendTrial(int $days): void
+    {
+        $baslangic = $this->trial_ends_at?->isFuture() ? $this->trial_ends_at : now();
+
+        $this->forceFill([
+            'status' => TenantStatus::Trialing,
+            'trial_ends_at' => $baslangic->copy()->addDays($days),
+        ])->save();
+    }
+
+    private function statusAfterReactivation(): TenantStatus
+    {
+        if ($this->paid_until?->isFuture()) {
+            return TenantStatus::Active;
+        }
+
+        if ($this->trial_ends_at?->isFuture()) {
+            return TenantStatus::Trialing;
+        }
+
+        return TenantStatus::PastDue;
     }
 
     public function host(): string

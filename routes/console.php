@@ -5,3 +5,4 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('tenants:expire-trials')->dailyAt('03:00');
+Schedule::command('tenants:expire-subscriptions')->dailyAt('03:10');
