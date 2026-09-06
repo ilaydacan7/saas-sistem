@@ -31,6 +31,7 @@ class TenantRegistrar
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
+                'role' => TenantRole::Owner,
             ]);
 
             $owner->email_verified_at = now();

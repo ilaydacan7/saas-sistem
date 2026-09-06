@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureCanManageTeam;
 use App\Http\Middleware\EnsureCentralDomain;
 use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\EnsureTenantDomain;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [
+        $middleware->web(prepend: [
             ResolveTenant::class,
             EnsureTenantIsActive::class,
         ]);
@@ -31,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant.only' => EnsureTenantDomain::class,
             'central' => EnsureCentralDomain::class,
             'superadmin' => EnsureSuperAdmin::class,
+            'ekip' => EnsureCanManageTeam::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Tenant;
 use App\Models\User;
+use App\Tenancy\TenantRole;
 use App\Tenancy\TenantStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -38,9 +39,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ([$acme, $beta, $gecikmis] as $tenant) {
-            User::factory()->forTenant($tenant)->create([
-                'name' => 'Tenant Yöneticisi',
+            User::factory()->forTenant($tenant)->owner()->create([
+                'name' => 'Şirket Sahibi',
                 'email' => 'yonetici@ornek.com',
+                'password' => Hash::make('parola12345'),
+            ]);
+
+            User::factory()->forTenant($tenant)->role(TenantRole::Member)->create([
+                'name' => 'Ekip Üyesi',
+                'email' => 'uye@ornek.com',
                 'password' => Hash::make('parola12345'),
             ]);
         }

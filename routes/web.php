@@ -7,8 +7,10 @@ use App\Http\Controllers\Central\TenantAdminController;
 use App\Http\Controllers\Central\TenantRegistrationController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\ForgotPasswordController;
+use App\Http\Controllers\Tenant\InvitationAcceptController;
 use App\Http\Controllers\Tenant\LoginController;
 use App\Http\Controllers\Tenant\ResetPasswordController;
+use App\Http\Controllers\Tenant\TeamController;
 use App\Tenancy\TenantContext;
 use Illuminate\Support\Facades\Route;
 
@@ -55,11 +57,22 @@ Route::middleware('tenant.only')->group(function () {
 
         Route::get('/parola/sifirla/{token}', [ResetPasswordController::class, 'create'])->name('parola.sifirla');
         Route::post('/parola/sifirla', [ResetPasswordController::class, 'store']);
+
+        Route::get('/davet/{token}', [InvitationAcceptController::class, 'create'])->name('davet.kabul');
+        Route::post('/davet/{token}', [InvitationAcceptController::class, 'store']);
     });
 
     Route::middleware('auth')->group(function () {
         Route::get('/panel', DashboardController::class)->name('panel');
         Route::post('/cikis', [LoginController::class, 'destroy'])->name('logout');
+
+        Route::middleware('ekip')->prefix('ekip')->name('ekip.')->group(function () {
+            Route::get('/', [TeamController::class, 'index'])->name('index');
+            Route::post('/davet', [TeamController::class, 'invite'])->name('davet');
+            Route::delete('/davet/{invitation}', [TeamController::class, 'cancelInvite'])->name('davet.iptal');
+            Route::patch('/{user}/rol', [TeamController::class, 'updateRole'])->name('rol');
+            Route::delete('/{user}', [TeamController::class, 'remove'])->name('cikar');
+        });
     });
 
     Route::view('/faturalandirma/odeme-gerekli', 'billing.overdue')->name('billing.overdue');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Tenancy\TenantRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,11 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /** @var list<string> */
     protected $attributes = [
         'is_super_admin' => false,
+        'role' => 'member',
     ];
 
     protected $hidden = [
@@ -39,12 +42,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_super_admin' => 'boolean',
+            'role' => TenantRole::class,
         ];
     }
 
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->role === TenantRole::Owner;
+    }
+
+    public function canManageTeam(): bool
+    {
+        return $this->role->canManageTeam();
     }
 
     public function isSuperAdmin(): bool
