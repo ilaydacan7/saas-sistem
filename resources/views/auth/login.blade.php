@@ -3,38 +3,32 @@
 @section('baslik', $tenant->name.' — Giriş')
 
 @section('icerik')
-<div class="kart">
+<x-card>
     @if ($justRegistered)
-        <div class="kutu">
+        <x-notice tone="basari">
             Hesabınız hazır. Kayıt sırasında belirlediğiniz bilgilerle giriş yapın.
-        </div>
+        </x-notice>
     @endif
 
-    <h1>{{ $tenant->name }}</h1>
-    <p class="alt">{{ $tenant->host() }} hesabınıza giriş yapın.</p>
+    <h1 class="text-xl font-semibold tracking-tight">{{ $tenant->name }}</h1>
+    <p class="mt-1.5 mb-6 text-sm text-slate-500 dark:text-slate-400">
+        {{ $tenant->host() }} hesabınıza giriş yapın.
+    </p>
 
     <form method="POST" action="{{ route('giris') }}">
         @csrf
 
-        <div class="alan">
-            <label for="email">E-posta</label>
-            <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus>
-            @error('email')<div class="hata">{{ $message }}</div>@enderror
-        </div>
+        <x-text-field name="email" label="E-posta" type="email" required autofocus />
 
-        <div class="alan">
-            <label for="password">Parola</label>
-            <input id="password" name="password" type="password" required>
-            @error('password')<div class="hata">{{ $message }}</div>@enderror
-        </div>
+        <x-text-field name="password" label="Parola" type="password" required />
 
-        <div class="alan">
-            <label class="kucuk" style="font-weight:400">
-                <input type="checkbox" name="remember" value="1"> Beni hatırla
-            </label>
-        </div>
+        <label class="mb-5 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <input type="checkbox" name="remember" value="1"
+                   class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-800">
+            Beni hatırla
+        </label>
 
-        <button type="submit">Giriş yap</button>
+        <x-button type="submit">Giriş yap</x-button>
     </form>
-</div>
+</x-card>
 @endsection

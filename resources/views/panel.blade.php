@@ -1,33 +1,43 @@
 @extends('layouts.app')
 
 @section('baslik', $tenant->name.' — Panel')
-@section('kabuk', 'genis')
+@section('genislik', 'max-w-2xl')
 
 @section('icerik')
-<div class="kart">
-    <div class="satir" style="margin-bottom:20px">
+<x-card>
+    <div class="mb-6 flex items-start justify-between gap-4">
         <div>
-            <h1 style="margin-bottom:2px">{{ $tenant->name }}</h1>
-            <div class="kucuk">{{ auth()->user()->name }} olarak giriş yapıldı</div>
+            <h1 class="text-xl font-semibold tracking-tight">{{ $tenant->name }}</h1>
+            <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                {{ auth()->user()->name }} olarak giriş yapıldı
+            </p>
         </div>
+
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="cikis">Çıkış</button>
+            <x-button type="submit" variant="ghost">Çıkış</x-button>
         </form>
     </div>
 
     @if ($tenant->status === \App\Tenancy\TenantStatus::Trialing && $kalanGun !== null)
-        <div class="kutu">
-            Deneme sürenizin bitmesine <strong>{{ $kalanGun }} gün</strong> kaldı
+        <x-notice tone="uyari">
+            Deneme sürenizin bitmesine <strong class="font-semibold">{{ $kalanGun }} gün</strong> kaldı
             ({{ $tenant->trial_ends_at->format('d.m.Y') }}).
-        </div>
+        </x-notice>
     @endif
 
-    <table>
-        <tr><td>Adres</td><td>{{ $tenant->host() }}</td></tr>
-        <tr><td>Durum</td><td>{{ $tenant->status->label() }}</td></tr>
-        <tr><td>Kullanıcı sayısı</td><td>{{ $tenant->users()->count() }}</td></tr>
-        <tr><td>Oluşturulma</td><td>{{ $tenant->created_at->format('d.m.Y H:i') }}</td></tr>
-    </table>
-</div>
+    <dl class="divide-y divide-slate-200 text-sm dark:divide-slate-800">
+        @foreach ([
+            'Adres' => $tenant->host(),
+            'Durum' => $tenant->status->label(),
+            'Kullanıcı sayısı' => $tenant->users()->count(),
+            'Oluşturulma' => $tenant->created_at->format('d.m.Y H:i'),
+        ] as $baslik => $deger)
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-slate-500 dark:text-slate-400">{{ $baslik }}</dt>
+                <dd class="font-medium">{{ $deger }}</dd>
+            </div>
+        @endforeach
+    </dl>
+</x-card>
 @endsection

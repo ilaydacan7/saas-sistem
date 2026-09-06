@@ -3,18 +3,18 @@
 @section('baslik', 'Ödeme gerekli')
 
 @section('icerik')
-<div class="kart">
-    <h1>Ödemeniz görünmüyor</h1>
-    <p class="alt">
+<x-card>
+    <h1 class="text-xl font-semibold tracking-tight">Ödemeniz görünmüyor</h1>
+    <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
         Hesabınız ödeme gecikmesi nedeniyle sınırlandırıldı. Verileriniz duruyor;
         ödemeniz alındığında tüm ekranlara erişiminiz otomatik olarak geri açılır.
     </p>
 
     @auth
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout') }}" class="mt-6">
             @csrf
-            <button type="submit" class="cikis">Çıkış yap</button>
+            <x-button type="submit" variant="ghost">Çıkış yap</x-button>
         </form>
     @endauth
-</div>
+</x-card>
 @endsection
