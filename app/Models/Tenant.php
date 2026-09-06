@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Inventory\InventoryProvisioner;
 use App\Modules\Module;
 use App\Tenancy\TenantStatus;
 use Database\Factories\TenantFactory;
@@ -99,6 +100,10 @@ class Tenant extends Model
         ]);
 
         $this->unsetRelation('modules');
+
+        if ($module === Module::Inventory) {
+            app(InventoryProvisioner::class)->ensure($this);
+        }
     }
 
     public function disableModule(Module $module): void

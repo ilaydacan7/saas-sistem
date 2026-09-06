@@ -56,5 +56,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('parola12345'),
             ]);
         }
+
+        $this->call(DemoInventorySeeder::class);
     }
 }

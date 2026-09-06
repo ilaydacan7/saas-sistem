@@ -11,7 +11,9 @@ use App\Http\Controllers\Tenant\ForgotPasswordController;
 use App\Http\Controllers\Tenant\InvitationAcceptController;
 use App\Http\Controllers\Tenant\LoginController;
 use App\Http\Controllers\Tenant\ModuleSettingsController;
+use App\Http\Controllers\Tenant\ProductController;
 use App\Http\Controllers\Tenant\ResetPasswordController;
+use App\Http\Controllers\Tenant\StockMovementController;
 use App\Http\Controllers\Tenant\TeamController;
 use App\Tenancy\TenantContext;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +77,18 @@ Route::middleware('tenant.only')->group(function () {
             Route::get('/{customer}/duzenle', [CustomerController::class, 'edit'])->name('edit');
             Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
             Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['modul:stok'])->prefix('stok')->name('stok.')->group(function () {
+            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/yeni', [ProductController::class, 'create'])->name('create');
+            Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/hareketler', [StockMovementController::class, 'index'])->name('hareketler');
+            Route::get('/hareket', [StockMovementController::class, 'create'])->name('hareket');
+            Route::post('/hareket', [StockMovementController::class, 'store'])->name('hareket.kaydet');
+            Route::get('/{product}/duzenle', [ProductController::class, 'edit'])->name('edit');
+            Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+            Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
         });
 
         Route::middleware('ekip')->prefix('ayarlar')->name('ayarlar.')->group(function () {

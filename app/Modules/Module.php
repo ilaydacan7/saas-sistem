@@ -7,8 +7,10 @@ namespace App\Modules;
 enum Module: string
 {
     case Customers = 'musteriler';
-    case Catalog = 'katalog';
+    case Inventory = 'stok';
+    case Sales = 'satis';
     case Finance = 'finans';
+    case Collections = 'tahsilat';
     case Appointments = 'randevu';
     case Staff = 'personel';
 
@@ -16,8 +18,10 @@ enum Module: string
     {
         return match ($this) {
             self::Customers => 'Müşteriler',
-            self::Catalog => 'Ürün ve Hizmetler',
+            self::Inventory => 'Ürünler ve Stok',
+            self::Sales => 'Satışlar',
             self::Finance => 'Gelir ve Gider',
+            self::Collections => 'Tahsilat',
             self::Appointments => 'Randevular',
             self::Staff => 'Personel',
         };
@@ -27,8 +31,10 @@ enum Module: string
     {
         return match ($this) {
             self::Customers => 'Müşteri ve tedarikçi kayıtları, iletişim bilgileri, notlar.',
-            self::Catalog => 'Sattığınız ürün ve hizmetler, fiyat listesi.',
-            self::Finance => 'Kasa hareketleri, tahsilat ve ödemeler.',
+            self::Inventory => 'Ürün ve hizmet kartları, depo, stok giriş çıkış ve kritik stok uyarısı.',
+            self::Sales => 'Satış kaydı, sipariş takibi ve satıştan doğan alacak.',
+            self::Finance => 'Gelir ve gider hareketleri, kategoriler, kasa durumu.',
+            self::Collections => 'Bekleyen, kısmi ve tamamlanan tahsilatlar, vade takibi.',
             self::Appointments => 'Randevu takvimi ve iş planlaması.',
             self::Staff => 'Personel kayıtları ve devam takibi.',
         };
@@ -52,7 +58,7 @@ enum Module: string
      */
     public function isAvailable(): bool
     {
-        return $this === self::Customers;
+        return in_array($this, [self::Customers, self::Inventory], true);
     }
 
     /**

@@ -47,8 +47,6 @@ class MusteriModuluTest extends TestCase
 
     public function test_modul_kapaliysa_erisilemez(): void
     {
-        $this->tenant->disableModule(Module::Catalog);
-
         $beta = Tenant::factory()->create(['slug' => 'beta']);
         $betaSahip = User::factory()->forTenant($beta)->owner()->create();
 
