@@ -6,7 +6,7 @@
 
 @section('icerik')
 <div class="mb-5">
-    <a href="{{ route('musteriler.index') }}" class="text-sm text-marka-600 hover:underline dark:text-marka-400">← Müşteriler</a>
+    <a href="{{ route('musteriler.index') }}" class="text-sm text-indigo-600 hover:underline dark:text-indigo-400">← Müşteriler</a>
     <h1 class="mt-1 text-xl font-semibold tracking-tight">
         {{ $yeni ? 'Yeni müşteri' : $customer->displayName() }}
     </h1>
@@ -27,7 +27,7 @@
                 @foreach (\App\Modules\CustomerType::cases() as $secenek)
                     <label class="flex-1 cursor-pointer rounded-lg border px-3 py-2 text-sm
                                   {{ $tur === $secenek->value
-                                     ? 'border-marka-500 bg-marka-50 font-medium text-marka-900 dark:bg-marka-900 dark:text-marka-200'
+                                     ? 'border-indigo-500 bg-indigo-50 font-medium text-indigo-900 dark:bg-indigo-950 dark:text-indigo-200'
                                      : 'border-slate-300 dark:border-slate-700' }}">
                         <input type="radio" name="type" value="{{ $secenek->value }}" class="mr-1.5"
                                @checked($tur === $secenek->value)>
@@ -53,26 +53,26 @@
         <div class="mb-4">
             <label for="address" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Adres</label>
             <textarea id="address" name="address" rows="2"
-                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-marka-500 dark:border-slate-700 dark:bg-slate-900">{{ old('address', $customer->address) }}</textarea>
+                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-indigo-500 dark:border-slate-700 dark:bg-slate-900">{{ old('address', $customer->address) }}</textarea>
             @error('address')<p class="mt-1.5 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
         </div>
 
         <div class="mb-4">
             <label for="note" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Not</label>
             <textarea id="note" name="note" rows="3"
-                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-marka-500 dark:border-slate-700 dark:bg-slate-900">{{ old('note', $customer->note) }}</textarea>
+                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-indigo-500 dark:border-slate-700 dark:bg-slate-900">{{ old('note', $customer->note) }}</textarea>
             @error('note')<p class="mt-1.5 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
         </div>
 
         <label class="mb-5 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <input type="hidden" name="is_active" value="0">
             <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $customer->is_active ?? true))
-                   class="rounded border-slate-300 text-marka-600 dark:border-slate-600 dark:bg-slate-800">
+                   class="rounded border-slate-300 text-indigo-600 dark:border-slate-600 dark:bg-slate-800">
             Aktif kayıt
         </label>
 
         <div class="flex items-center gap-3">
-            <button type="submit" class="rounded-lg bg-marka-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-marka-500">
+            <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
                 {{ $yeni ? 'Müşteriyi kaydet' : 'Değişiklikleri kaydet' }}
             </button>
 

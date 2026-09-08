@@ -1,8 +1,9 @@
-@extends('layouts.giris')
+@extends('layouts.app')
 
 @section('baslik', 'Parolamı unuttum')
 
 @section('icerik')
+<x-card>
     @if (session('durum'))
         <x-notice tone="basari">{{ session('durum') }}</x-notice>
     @endif
@@ -21,8 +22,9 @@
     </form>
 
     <p class="mt-5 text-center text-sm">
-        <a href="{{ route('giris') }}" class="text-marka-600 hover:underline dark:text-marka-400">
+        <a href="{{ route('giris') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">
             Girişe dön
         </a>
     </p>
+</x-card>
 @endsection

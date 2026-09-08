@@ -8,17 +8,4 @@
 @theme {
     --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif, 'Apple Color Emoji',
         'Segoe UI Emoji';
-
-    /* Marka rengi: #2C3E50 (Midnight Blue) ve çevresinde türetilmiş ölçek. */
-    --color-marka-50: #f4f6f8;
-    --color-marka-100: #e6eaee;
-    --color-marka-200: #c9d3db;
-    --color-marka-300: #a2b2c0;
-    --color-marka-400: #708698;
-    --color-marka-500: #48607a;
-    --color-marka-600: #2c3e50;
-    --color-marka-700: #243444;
-    --color-marka-800: #1c2836;
-    --color-marka-900: #151e29;
-    --color-marka-950: #0e151d;
 }

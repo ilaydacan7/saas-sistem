@@ -30,7 +30,7 @@
 <x-card class="mb-4 !p-4">
     <form method="GET" action="{{ route('yonetim.index') }}" class="flex flex-wrap gap-3">
         <input type="text" name="q" value="{{ $arama }}" placeholder="Ad veya adres ara"
-               class="min-w-48 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-marka-500 dark:border-slate-700 dark:bg-slate-900">
+               class="min-w-48 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-indigo-500 dark:border-slate-700 dark:bg-slate-900">
 
         <select name="durum"
                 class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900">
@@ -80,7 +80,7 @@
                         <td class="px-5 py-3 text-slate-500 dark:text-slate-400">{{ $tenant->users_count }}</td>
                         <td class="px-5 py-3 text-right">
                             <a href="{{ route('yonetim.detay', $tenant) }}"
-                               class="font-medium text-marka-600 hover:underline dark:text-marka-400">Aç</a>
+                               class="font-medium text-indigo-600 hover:underline dark:text-indigo-400">Aç</a>
                         </td>
                     </tr>
                 @empty

@@ -5,13 +5,13 @@
 @section('icerik')
 <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
     <div>
-        <a href="{{ route('stok.index') }}" class="text-sm text-marka-600 hover:underline dark:text-marka-400">← Ürünler</a>
+        <a href="{{ route('stok.index') }}" class="text-sm text-indigo-600 hover:underline dark:text-indigo-400">← Ürünler</a>
         <h1 class="mt-1 text-xl font-semibold tracking-tight">Stok hareketleri</h1>
         <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{{ $movements->total() }} kayıt</p>
     </div>
 
     <a href="{{ route('stok.hareket') }}"
-       class="rounded-lg bg-marka-600 px-4 py-2 text-sm font-semibold text-white hover:bg-marka-500">
+       class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
         Yeni hareket
     </a>
 </div>
