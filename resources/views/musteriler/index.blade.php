@@ -15,7 +15,7 @@
     </div>
 
     <a href="{{ route('musteriler.create') }}"
-       class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+       class="rounded-lg bg-marka-600 px-4 py-2 text-sm font-semibold text-white hover:bg-marka-500">
         Yeni müşteri
     </a>
 </div>
@@ -23,7 +23,7 @@
 <x-card class="mb-4 !p-4">
     <form method="GET" action="{{ route('musteriler.index') }}" class="flex flex-wrap gap-3">
         <input type="text" name="q" value="{{ $arama }}" placeholder="Ad, firma, telefon, e-posta veya vergi no"
-               class="min-w-56 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-indigo-500 dark:border-slate-700 dark:bg-slate-900">
+               class="min-w-56 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-offset-[-1px] focus:outline-marka-500 dark:border-slate-700 dark:bg-slate-900">
 
         <select name="tur" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900">
             <option value="">Tüm türler</option>
@@ -76,7 +76,7 @@
                         <td class="px-5 py-3 text-slate-500 dark:text-slate-400">{{ $customer->city ?: '—' }}</td>
                         <td class="px-5 py-3 text-right whitespace-nowrap">
                             <a href="{{ route('musteriler.edit', $customer) }}"
-                               class="font-medium text-indigo-600 hover:underline dark:text-indigo-400">Düzenle</a>
+                               class="font-medium text-marka-600 hover:underline dark:text-marka-400">Düzenle</a>
                         </td>
                     </tr>
                 @empty
@@ -86,7 +86,7 @@
                                 "{{ $arama }}" için kayıt bulunamadı.
                             @else
                                 Henüz müşteri eklenmemiş.
-                                <a href="{{ route('musteriler.create') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">İlkini ekleyin.</a>
+                                <a href="{{ route('musteriler.create') }}" class="text-marka-600 hover:underline dark:text-marka-400">İlkini ekleyin.</a>
                             @endif
                         </td>
                     </tr>

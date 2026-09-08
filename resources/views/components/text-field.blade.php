@@ -27,7 +27,7 @@
             {{ $attributes->class([
                 'w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400',
                 'bg-white dark:bg-slate-900 dark:text-slate-100',
-                'focus:outline-2 focus:outline-offset-[-1px] focus:outline-indigo-500',
+                'focus:outline-2 focus:outline-offset-[-1px] focus:outline-marka-500',
                 'border-slate-300 dark:border-slate-700' => ! $hata,
                 'border-red-500 dark:border-red-500' => $hata,
                 'rounded-r-none' => $suffix,

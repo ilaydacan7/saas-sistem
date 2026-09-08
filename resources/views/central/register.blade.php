@@ -1,9 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.giris')
 
 @section('baslik', 'Şirket kaydı')
 
 @section('icerik')
-<x-card>
     <h1 class="text-xl font-semibold tracking-tight">Şirketinizi kaydedin</h1>
     <p class="mt-1.5 mb-6 text-sm text-slate-500 dark:text-slate-400">
         @if ($trialDays > 0)
@@ -40,5 +39,4 @@
 
         <x-button type="submit">Hesabı oluştur</x-button>
     </form>
-</x-card>
 @endsection

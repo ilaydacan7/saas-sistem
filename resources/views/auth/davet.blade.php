@@ -1,9 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.giris')
 
 @section('baslik', $tenant->name.' ekibine katıl')
 
 @section('icerik')
-<x-card>
     <h1 class="text-xl font-semibold tracking-tight">{{ $tenant->name }} ekibine katılın</h1>
     <p class="mt-1.5 mb-6 text-sm text-slate-500 dark:text-slate-400">
         <strong class="font-medium text-slate-700 dark:text-slate-300">{{ $davet->email }}</strong>
@@ -26,5 +25,4 @@
 
         <x-button type="submit">Hesabımı oluştur</x-button>
     </form>
-</x-card>
 @endsection

@@ -4,7 +4,7 @@
 
 @section('icerik')
 <div class="mb-5">
-    <a href="{{ route('stok.index') }}" class="text-sm text-indigo-600 hover:underline dark:text-indigo-400">← Ürünler</a>
+    <a href="{{ route('stok.index') }}" class="text-sm text-marka-600 hover:underline dark:text-marka-400">← Ürünler</a>
     <h1 class="mt-1 text-xl font-semibold tracking-tight">Stok hareketi</h1>
 </div>
 
@@ -12,7 +12,7 @@
     <x-card>
         <p class="text-sm text-slate-500 dark:text-slate-400">
             Stok takibi yapılan aktif ürün yok.
-            <a href="{{ route('stok.create') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">Önce bir ürün ekleyin.</a>
+            <a href="{{ route('stok.create') }}" class="text-marka-600 hover:underline dark:text-marka-400">Önce bir ürün ekleyin.</a>
         </p>
     </x-card>
 @else
@@ -28,7 +28,7 @@
                     @foreach (\App\Modules\StockMovementType::cases() as $secenek)
                         <label class="cursor-pointer rounded-lg border px-3 py-2 text-sm
                                       {{ $tip === $secenek->value
-                                         ? 'border-indigo-500 bg-indigo-50 font-medium text-indigo-900 dark:bg-indigo-950 dark:text-indigo-200'
+                                         ? 'border-marka-500 bg-marka-50 font-medium text-marka-900 dark:bg-marka-900 dark:text-marka-200'
                                          : 'border-slate-300 dark:border-slate-700' }}">
                             <input type="radio" name="type" value="{{ $secenek->value }}" class="mr-1.5" @checked($tip === $secenek->value)>
                             {{ $secenek->label() }}
@@ -75,7 +75,7 @@
                           hint="Örneğin fatura numarası veya sayım notu. Zorunlu değil." />
 
             <div class="flex items-center gap-3">
-                <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
+                <button type="submit" class="rounded-lg bg-marka-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-marka-500">
                     Hareketi kaydet
                 </button>
                 <a href="{{ route('stok.index') }}" class="text-sm text-slate-500 hover:underline dark:text-slate-400">Vazgeç</a>

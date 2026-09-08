@@ -1,9 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.giris')
 
 @section('baslik', $tenant->name.' — Giriş')
 
 @section('icerik')
-<x-card>
     @if (session('durum'))
         <x-notice tone="basari">{{ session('durum') }}</x-notice>
     @endif
@@ -28,7 +27,7 @@
 
         <label class="mb-5 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <input type="checkbox" name="remember" value="1"
-                   class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-800">
+                   class="rounded border-slate-300 text-marka-600 focus:ring-marka-500 dark:border-slate-600 dark:bg-slate-800">
             Beni hatırla
         </label>
 
@@ -36,15 +35,14 @@
     </form>
 
     <p class="mt-5 text-center text-sm">
-        <a href="{{ route('parola.unuttum') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">
+        <a href="{{ route('parola.unuttum') }}" class="text-marka-600 hover:underline dark:text-marka-400">
             Parolamı unuttum
         </a>
     </p>
-</x-card>
 
 <p class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
     Şirketiniz bu değil mi?
-    <a href="{{ $merkezGirisUrl }}" class="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+    <a href="{{ $merkezGirisUrl }}" class="font-medium text-marka-600 hover:underline dark:text-marka-400">
         Başka adrese geçin
     </a>
 </p>

@@ -6,7 +6,7 @@
 @section('icerik')
 <div class="mb-6 flex items-start justify-between gap-4">
     <div>
-        <a href="{{ route('yonetim.index') }}" class="text-sm text-indigo-600 hover:underline dark:text-indigo-400">
+        <a href="{{ route('yonetim.index') }}" class="text-sm text-marka-600 hover:underline dark:text-marka-400">
             ← Kiracılar
         </a>
         <h1 class="mt-1 text-xl font-semibold tracking-tight">{{ $tenant->name }}</h1>
