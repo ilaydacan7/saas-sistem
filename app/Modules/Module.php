@@ -58,7 +58,7 @@ enum Module: string
      */
     public function isAvailable(): bool
     {
-        return in_array($this, [self::Customers, self::Inventory], true);
+        return in_array($this, [self::Customers, self::Inventory, self::Sales], true);
     }
 
     /**

@@ -15,6 +15,7 @@ use App\Http\Controllers\Tenant\LoginController;
 use App\Http\Controllers\Tenant\ModuleSettingsController;
 use App\Http\Controllers\Tenant\ProductController;
 use App\Http\Controllers\Tenant\ResetPasswordController;
+use App\Http\Controllers\Tenant\SaleController;
 use App\Http\Controllers\Tenant\StockMovementController;
 use App\Http\Controllers\Tenant\TeamController;
 use App\Tenancy\TenantContext;
@@ -86,6 +87,15 @@ Route::middleware('tenant.only')->group(function () {
             Route::get('/{customer}/duzenle', [CustomerController::class, 'edit'])->name('edit');
             Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
             Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['modul:satis'])->prefix('satis')->name('satis.')->group(function () {
+            Route::get('/', [SaleController::class, 'index'])->name('index');
+            Route::get('/yeni', [SaleController::class, 'create'])->name('create');
+            Route::post('/', [SaleController::class, 'store'])->name('store');
+            Route::get('/{sale}', [SaleController::class, 'show'])->name('show');
+            Route::post('/{sale}/tahsilat', [SaleController::class, 'addPayment'])->name('tahsilat');
+            Route::post('/{sale}/iptal', [SaleController::class, 'cancel'])->name('iptal');
         });
 
         Route::middleware(['modul:stok'])->prefix('stok')->name('stok.')->group(function () {
