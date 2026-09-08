@@ -14,7 +14,7 @@
     </a>
 
     <a href="{{ route('giris') }}" class="mt-3 block">
-        <x-button type="button" variant="ghost" class="w-full !px-4 !py-2.5 !text-sm">Giriş yap</x-button>
+        <x-button type="button" variant="secondary">Giriş yap</x-button>
     </a>
 
     <p class="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
