@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Sales;
 
+use App\Events\SalePaymentRecorded;
 use App\Inventory\StockManager;
 use App\Models\Product;
 use App\Models\Sale;
@@ -141,6 +142,8 @@ class SaleRecorder
             ]);
 
             $sale->forceFill(['paid_minor' => $sale->paid_minor + $amountMinor])->save();
+
+            SalePaymentRecorded::dispatch($payment);
 
             return $payment;
         });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Finance\CashBook;
 use App\Inventory\InventoryProvisioner;
 use App\Modules\Module;
 use App\Tenancy\TenantStatus;
@@ -101,9 +102,11 @@ class Tenant extends Model
 
         $this->unsetRelation('modules');
 
-        if ($module === Module::Inventory) {
-            app(InventoryProvisioner::class)->ensure($this);
-        }
+        match ($module) {
+            Module::Inventory => app(InventoryProvisioner::class)->ensure($this),
+            Module::Finance => app(CashBook::class)->ensureCategories($this),
+            default => null,
+        };
     }
 
     public function disableModule(Module $module): void

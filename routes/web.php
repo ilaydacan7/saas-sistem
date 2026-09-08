@@ -18,6 +18,7 @@ use App\Http\Controllers\Tenant\ResetPasswordController;
 use App\Http\Controllers\Tenant\SaleController;
 use App\Http\Controllers\Tenant\StockMovementController;
 use App\Http\Controllers\Tenant\TeamController;
+use App\Http\Controllers\Tenant\TransactionController;
 use App\Tenancy\TenantContext;
 use Illuminate\Support\Facades\Route;
 
@@ -87,6 +88,15 @@ Route::middleware('tenant.only')->group(function () {
             Route::get('/{customer}/duzenle', [CustomerController::class, 'edit'])->name('edit');
             Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
             Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['modul:finans'])->prefix('finans')->name('finans.')->group(function () {
+            Route::get('/', [TransactionController::class, 'index'])->name('index');
+            Route::get('/yeni', [TransactionController::class, 'create'])->name('create');
+            Route::post('/', [TransactionController::class, 'store'])->name('store');
+            Route::get('/{transaction}/duzenle', [TransactionController::class, 'edit'])->name('edit');
+            Route::put('/{transaction}', [TransactionController::class, 'update'])->name('update');
+            Route::delete('/{transaction}', [TransactionController::class, 'destroy'])->name('destroy');
         });
 
         Route::middleware(['modul:satis'])->prefix('satis')->name('satis.')->group(function () {
