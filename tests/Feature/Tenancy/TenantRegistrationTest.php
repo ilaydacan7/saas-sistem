@@ -90,13 +90,45 @@ class TenantRegistrationTest extends TestCase
         return [
             'rezerve kelime' => ['billing'],
             'rezerve subdomain' => ['www'],
-            'bosluk' => ['acme ltd'],
-            'tire ile baslar' => ['-acme'],
-            'tire ile biter' => ['acme-'],
-            'nokta' => ['a.b'],
             'cok kisa' => ['ab'],
-            'turkce karakter' => ['sirket'.'ş'],
+            'harf ve rakam yok' => ['!!! ---'],
         ];
+    }
+
+    /**
+     * Kullanıcı adresi Türkçe karakterle, boşlukla veya noktalamayla yazabilir.
+     * Bunları reddetmek yerine geçerli bir adrese çeviriyoruz.
+     *
+     * @dataProvider duzeltilenSluglar
+     */
+    public function test_gecersiz_yazim_adrese_cevrilir(string $girdi, string $beklenen): void
+    {
+        $this->post(self::MERKEZ.'/kayit', $this->gecerliVeri(['slug' => $girdi]))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('tenants', ['slug' => $beklenen]);
+    }
+
+    public static function duzeltilenSluglar(): array
+    {
+        return [
+            'turkce karakter' => ['lefkoşa_gönyeli', 'lefkosa-gonyeli'],
+            'bosluk' => ['Acme Ltd', 'acme-ltd'],
+            'tire ile baslar' => ['-acme', 'acme'],
+            'tire ile biter' => ['acme-', 'acme'],
+            'nokta' => ['a.b.firma', 'abfirma'],
+            'alt cizgi' => ['yildiz_hirdavat', 'yildiz-hirdavat'],
+        ];
+    }
+
+    public function test_adres_bos_birakilirsa_sirket_adindan_uretilir(): void
+    {
+        $this->post(self::MERKEZ.'/kayit', $this->gecerliVeri([
+            'company' => 'Yıldız Hırdavat',
+            'slug' => '',
+        ]))->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('tenants', ['slug' => 'yildiz-hirdavat']);
     }
 
     public function test_kullanilan_slug_reddedilir(): void

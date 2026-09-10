@@ -18,8 +18,17 @@ class RegisterTenantRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        // Kullanıcı adresini Türkçe karakterle veya boşlukla yazabilir:
+        // "Lefkoşa Gönyeli" -> "lefkosa-gonyeli". Reddetmek yerine düzeltiyoruz.
+        // Adres boş bırakılmışsa şirket adından türetilir.
+        $adres = trim((string) $this->input('slug'));
+
+        if ($adres === '') {
+            $adres = trim((string) $this->input('company'));
+        }
+
         $this->merge([
-            'slug' => Str::lower(trim((string) $this->input('slug'))),
+            'slug' => Str::slug($adres),
             'email' => Str::lower(trim((string) $this->input('email'))),
         ]);
     }
@@ -57,7 +66,8 @@ class RegisterTenantRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'slug.regex' => ':attribute yalnızca küçük harf, rakam ve tire içerebilir; tire ile başlayamaz veya bitemez.',
+            'slug.regex' => ':attribute geçerli bir adrese çevrilemedi. Harf ve rakam içeren bir ad yazın.',
+            'slug.min' => ':attribute en az 3 karakter olmalı.',
             'slug.not_in' => 'Bu :attribute sistem tarafından ayrılmış, lütfen başka bir tane seçin.',
             'slug.unique' => 'Bu :attribute başka bir şirket tarafından kullanılıyor.',
         ];

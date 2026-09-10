@@ -22,8 +22,14 @@
             name="slug"
             label="Adresiniz"
             suffix=".{{ $baseDomain }}"
-            hint="Küçük harf, rakam ve tire. Sonradan değiştirilemez."
+            hint="Şirket adınızdan önerilir. Türkçe karakterler ve boşluklar otomatik düzeltilir."
             required />
+
+        <p class="-mt-2 mb-4 text-xs text-slate-500 dark:text-slate-400">
+            Panelinizin adresi:
+            <span class="font-medium text-slate-700 dark:text-slate-300"
+                  data-adres-onizleme=".{{ $baseDomain }}"></span>
+        </p>
 
         <x-text-field name="name" label="Ad soyad" required />
 
