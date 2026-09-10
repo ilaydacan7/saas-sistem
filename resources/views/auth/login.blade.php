@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('baslik', $tenant->name.' — Giriş')
+@section('baslik', 'Giriş')
 
 @section('icerik')
 <x-card>
@@ -14,9 +14,9 @@
         </x-notice>
     @endif
 
-    <h1 class="text-xl font-semibold tracking-tight">{{ $tenant->name }}</h1>
+    <h1 class="text-xl font-semibold tracking-tight">Tekrar hoş geldiniz</h1>
     <p class="mt-1.5 mb-6 text-sm text-slate-500 dark:text-slate-400">
-        {{ $tenant->host() }} hesabınıza giriş yapın.
+        Devam etmek için giriş yapın.
     </p>
 
     <form method="POST" action="{{ route('giris') }}">
@@ -43,9 +43,9 @@
 </x-card>
 
 <p class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-    Şirketiniz bu değil mi?
+    Farklı bir hesaba mı gireceksiniz?
     <a href="{{ $merkezGirisUrl }}" class="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
-        Başka adrese geçin
+        Adres değiştirin
     </a>
 </p>
 @endsection

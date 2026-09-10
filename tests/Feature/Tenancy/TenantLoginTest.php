@@ -42,7 +42,8 @@ class TenantLoginTest extends TestCase
     {
         $this->get('http://acme.saas.local/giris')
             ->assertOk()
-            ->assertSee($this->acme->name);
+            ->assertSee('Giriş yap')
+            ->assertDontSee($this->acme->name);
     }
 
     public function test_merkezi_hostta_kiraci_giris_formu_yerine_adres_kapisi_acilir(): void

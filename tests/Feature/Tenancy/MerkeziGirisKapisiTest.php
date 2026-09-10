@@ -38,8 +38,11 @@ class MerkeziGirisKapisiTest extends TestCase
     {
         $this->get('http://acme.saas.local/giris')
             ->assertOk()
-            ->assertSee('Acme A.Ş.')
-            ->assertSee('Parolamı unuttum');
+            ->assertSee('Tekrar hoş geldiniz')
+            ->assertSee('Parolamı unuttum')
+            // Giriş ekranında ürün adı görünür, işletme adı değil.
+            ->assertSee(config('app.name'))
+            ->assertDontSee('Acme A.Ş.');
     }
 
     public function test_slug_ile_kiraci_adresine_yonlendirir(): void
