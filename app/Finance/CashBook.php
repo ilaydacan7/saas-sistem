@@ -65,20 +65,6 @@ class CashBook
         ]));
     }
 
-    /**
-     * Bir kaynağa (örneğin satış tahsilatına) bağlı kaydı siler.
-     * Kaynak geri alındığında kasadaki karşılığı da kalmamalı.
-     */
-    public function removeForSource(string $sourceType, int $sourceId): void
-    {
-        $this->context->runWithoutTenant(function () use ($sourceType, $sourceId): void {
-            Transaction::query()
-                ->where('source_type', $sourceType)
-                ->where('source_id', $sourceId)
-                ->delete();
-        });
-    }
-
     public function systemCategoryId(Tenant $tenant, TransactionType $type): ?int
     {
         $ad = $type->systemCategory();

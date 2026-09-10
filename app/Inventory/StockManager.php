@@ -115,6 +115,12 @@ class StockManager
             throw new StockException($product->name.' için stok takibi kapalı.');
         }
 
+        // Ürün ve depo aynı işletmeye ait olmalı: çağrı yerinde doğrulama
+        // atlanırsa bir kiracının deposuna başka kiracının ürünü işlenebilirdi.
+        if ($product->tenant_id !== $warehouse->tenant_id) {
+            throw new StockException('Ürün ve depo aynı işletmeye ait değil.');
+        }
+
         $yeni = round((float) $seviye->quantity + $delta, 3);
 
         if ($yeni < 0) {
