@@ -6,3 +6,5 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('tenants:expire-trials')->dailyAt('03:00');
 Schedule::command('tenants:expire-subscriptions')->dailyAt('03:10');
+
+Schedule::command('yedek:al')->dailyAt('02:00')->withoutOverlapping();

@@ -33,11 +33,11 @@ Route::get('/', function (TenantContext $context) {
 Route::middleware('central')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/adresimi-bul', [WorkspaceController::class, 'findCreate'])->name('adresimi.bul');
-        Route::post('/adresimi-bul', [WorkspaceController::class, 'findStore']);
+        Route::post('/adresimi-bul', [WorkspaceController::class, 'findStore'])->middleware('throttle:5,1');
     });
 
     Route::get('/kayit', [TenantRegistrationController::class, 'create'])->name('kayit');
-    Route::post('/kayit', [TenantRegistrationController::class, 'store']);
+    Route::post('/kayit', [TenantRegistrationController::class, 'store'])->middleware('throttle:5,10');
 
     Route::prefix('yonetim')->name('yonetim.')->group(function () {
         Route::middleware('guest')->group(function () {
@@ -68,13 +68,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('tenant.only')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/parola/unuttum', [ForgotPasswordController::class, 'create'])->name('parola.unuttum');
-        Route::post('/parola/unuttum', [ForgotPasswordController::class, 'store']);
+        Route::post('/parola/unuttum', [ForgotPasswordController::class, 'store'])->middleware('throttle:5,1');
 
         Route::get('/parola/sifirla/{token}', [ResetPasswordController::class, 'create'])->name('parola.sifirla');
-        Route::post('/parola/sifirla', [ResetPasswordController::class, 'store']);
+        Route::post('/parola/sifirla', [ResetPasswordController::class, 'store'])->middleware('throttle:5,1');
 
         Route::get('/davet/{token}', [InvitationAcceptController::class, 'create'])->name('davet.kabul');
-        Route::post('/davet/{token}', [InvitationAcceptController::class, 'store']);
+        Route::post('/davet/{token}', [InvitationAcceptController::class, 'store'])->middleware('throttle:10,1');
     });
 
     Route::middleware('auth')->group(function () {

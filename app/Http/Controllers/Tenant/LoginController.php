@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Tenant;
 
+use App\Auth\LoginThrottle;
 use App\Http\Controllers\Controller;
 use App\Tenancy\TenantContext;
 use Illuminate\Contracts\View\View;
@@ -15,7 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    public function __construct(private readonly TenantContext $context) {}
+    public function __construct(
+        private readonly TenantContext $context,
+        private readonly LoginThrottle $sinir,
+    ) {}
 
     public function create(Request $request): View
     {
@@ -37,14 +41,20 @@ class LoginController extends Controller
         ]);
 
         $credentials['email'] = Str::lower($credentials['email']);
-        $credentials['tenant_id'] = $this->context->getOrFail()->getKey();
+        $tenantId = $this->context->getOrFail()->getKey();
+        $credentials['tenant_id'] = $tenantId;
+
+        $this->sinir->ensureIsNotLimited($request, $credentials['email'], $tenantId);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+            $this->sinir->hit($request, $credentials['email'], $tenantId);
+
             throw ValidationException::withMessages([
                 'email' => 'Bu bilgilerle eşleşen bir hesap bulunamadı.',
             ]);
         }
 
+        $this->sinir->clear($request, $credentials['email'], $tenantId);
         $request->session()->regenerate();
 
         return redirect()->intended(route('panel'));
