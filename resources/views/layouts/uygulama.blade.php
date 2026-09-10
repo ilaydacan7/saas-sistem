@@ -8,16 +8,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('baslik', config('app.name'))</title>
+    <title>@yield('baslik', config('app.name')) — {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full bg-slate-50 font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
 <div class="mx-auto flex min-h-full max-w-6xl gap-6 px-5 py-6">
 
     <aside class="hidden w-56 shrink-0 md:block">
-        <div class="mb-6">
-            <div class="text-sm font-semibold">{{ $aktifTenant?->name }}</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">{{ $aktifTenant?->host() }}</div>
+        <a href="{{ route('panel') }}" class="mb-5 flex items-center gap-2.5">
+            <x-marka-simge class="h-8 w-8" />
+            <span class="text-lg font-semibold tracking-tight">{{ config('app.name') }}</span>
+        </a>
+
+        <div class="mb-6 rounded-lg border border-slate-200 px-3 py-2 dark:border-slate-800">
+            <div class="truncate text-sm font-medium">{{ $aktifTenant?->name }}</div>
+            <div class="truncate text-xs text-slate-500 dark:text-slate-400">{{ $aktifTenant?->host() }}</div>
         </div>
 
         <nav class="space-y-0.5 text-sm">
@@ -57,6 +62,12 @@
     </aside>
 
     <main class="min-w-0 flex-1">
+        <div class="mb-4 flex items-center gap-2.5 md:hidden">
+            <x-marka-simge class="h-8 w-8" />
+            <span class="text-lg font-semibold tracking-tight">{{ config('app.name') }}</span>
+            <span class="ml-auto truncate text-xs text-slate-500 dark:text-slate-400">{{ $aktifTenant?->name }}</span>
+        </div>
+
         <div class="mb-4 flex flex-wrap gap-2 md:hidden">
             <a href="{{ route('panel') }}" class="rounded-lg bg-white px-3 py-1.5 text-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">Panel</a>
             @foreach ($aktifTenant?->enabledModules() ?? [] as $modul)
