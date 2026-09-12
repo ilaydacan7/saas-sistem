@@ -183,6 +183,59 @@ class PanelRaporuTest extends TestCase
         $this->assertSame(30000, $seri[11]['kurus']);
     }
 
+    public function test_gece_yarisindan_sonra_gun_turkiye_saatine_gore_doner(): void
+    {
+        // Türkiye'de 12 Eylül 01:30; UTC'de hâlâ 11 Eylül.
+        $this->travelTo(Carbon::parse('2026-09-12 01:30', 'Europe/Istanbul'));
+
+        // Formdan yalnızca tarih gelir: dünkü satış.
+        $this->satis(3, tarih: Carbon::parse('2026-09-11'));
+
+        $kart = collect($this->rapor()->kartlar())->firstWhere('etiket', 'Bugünkü satış');
+        $seri = $this->rapor()->satisSerisi('gun');
+
+        $this->assertSame(0, $kart['kurus']);
+        $this->assertSame('12.09', $seri[13]['etiket']);
+        $this->assertSame(0, $seri[13]['kurus']);
+        $this->assertSame(30000, $seri[12]['kurus']);
+
+        $this->actingAs($this->sahip)->get(self::HOST.'/satis/yeni')
+            ->assertOk()
+            ->assertSee('value="2026-09-12"', false);
+    }
+
+    public function test_seri_bitmemis_ve_gelecek_donemi_isaretler(): void
+    {
+        $this->travelTo(Carbon::parse('2026-09-12 14:00', 'Europe/Istanbul'));
+
+        $gunluk = $this->rapor()->satisSerisi('gun');
+        $this->assertSame('tamam', $gunluk[12]['durum']);
+        $this->assertSame('devam', $gunluk[13]['durum']);
+        $this->assertSame('12.09.2026', $gunluk[13]['baslik']);
+
+        $haftalik = $this->rapor()->satisSerisi('hafta');
+        $this->assertSame('devam', $haftalik[11]['durum']);
+        $this->assertSame('07.09.2026 haftası', $haftalik[11]['baslik']);
+
+        $yillik = $this->rapor()->satisSerisi('yil');
+        $this->assertSame('tamam', $yillik[7]['durum']);
+        $this->assertSame('devam', $yillik[8]['durum']);
+        $this->assertSame('gelecek', $yillik[9]['durum']);
+    }
+
+    public function test_grafik_toplami_ve_yuvarlak_eksen_gosterir(): void
+    {
+        $this->satis(2, tarih: now());
+        $this->satis(1, tarih: now()->subDays(2));
+
+        // En yüksek gün ₺200: eksen ₺50 adımla ₺200'e kadar çıkar.
+        $this->actingAs($this->sahip)->get(self::HOST.'/panel')
+            ->assertOk()
+            ->assertSeeInOrder(['Dönem toplamı', '₺300,00'])
+            ->assertSeeInOrder(['0', '50', '100', '150', '200'])
+            ->assertSee('(devam ediyor)');
+    }
+
     public function test_donem_disindaki_satis_seriye_girmez(): void
     {
         $this->satis(9, tarih: now()->subDays(60));

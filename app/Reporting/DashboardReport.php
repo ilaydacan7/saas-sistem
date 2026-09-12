@@ -135,7 +135,7 @@ class DashboardReport
      * SQLite ve PostgreSQL'in tarih fonksiyonları farklı, tek kod iki yerde
      * de aynı sonucu vermeli.
      *
-     * @return list<array{etiket: string, kurus: int}>
+     * @return list<array{etiket: string, baslik: string, durum: string, kurus: int}>
      */
     public function satisSerisi(string $donem): array
     {
@@ -277,7 +277,10 @@ class DashboardReport
     /**
      * Boş kovalar önceden üretilir; satış olmayan gün grafikte sıfır olarak durur.
      *
-     * @return array{0: array<string, array{etiket: string, kurus: int}>, 1: Carbon}
+     * Durum, bitmemiş dönemin düşüş gibi okunmasını önler:
+     * "tamam" bitmiş, "devam" içinde bulunulan, "gelecek" henüz gelmemiş dönem.
+     *
+     * @return array{0: array<string, array{etiket: string, baslik: string, durum: string, kurus: int}>, 1: Carbon}
      */
     private function kovalar(string $donem): array
     {
@@ -290,6 +293,12 @@ class DashboardReport
                 $tarih = now()->startOfYear()->addMonths($ay - 1);
                 $kovalar[$tarih->format('Y-m')] = [
                     'etiket' => $tarih->translatedFormat('M'),
+                    'baslik' => $tarih->translatedFormat('F Y'),
+                    'durum' => match (true) {
+                        $ay < now()->month => 'tamam',
+                        $ay === now()->month => 'devam',
+                        default => 'gelecek',
+                    },
                     'kurus' => 0,
                 ];
             }
@@ -304,6 +313,8 @@ class DashboardReport
                 $tarih = $baslangic->copy()->addWeeks($i);
                 $kovalar[$tarih->format('o-W')] = [
                     'etiket' => $tarih->format('d.m'),
+                    'baslik' => $tarih->format('d.m.Y').' haftası',
+                    'durum' => $i === 11 ? 'devam' : 'tamam',
                     'kurus' => 0,
                 ];
             }
@@ -317,6 +328,8 @@ class DashboardReport
             $tarih = $baslangic->copy()->addDays($i);
             $kovalar[$tarih->format('Y-m-d')] = [
                 'etiket' => $tarih->format('d.m'),
+                'baslik' => $tarih->format('d.m.Y'),
+                'durum' => $i === 13 ? 'devam' : 'tamam',
                 'kurus' => 0,
             ];
         }
